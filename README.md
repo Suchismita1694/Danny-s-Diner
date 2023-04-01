@@ -159,8 +159,20 @@ group by cte.customer_id
 ```
 --10.The first week after a customer joins the program (including their join date) they earn 2x points on all items, 
 -- not just sushi- how many points do customer A and B have at the end of January?
-
-
+```
+select s.customer_id, 
+SUM(case when order_date between '2021-01-07' and '2021-01-15' then m.price*20
+	     when m.product_id = 1 then m.price * 20
+	     else m.price* 10 end) as points 
+from sales s
+join menu m
+on m.product_id = s.product_id
+join members mem
+on mem.customer_id = s.customer_id
+--where order_date <= '2021-01-31'
+--or order_date > '2021-01-06'
+group by s.customer_id
+```
 --BONUS
 -- 1.
 ```
